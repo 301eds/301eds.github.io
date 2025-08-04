@@ -179,10 +179,10 @@ class SocialMediaManager {
     handleSocialClick(platform, link) {
         // 这里可以设置实际的社交媒体链接
         const socialUrls = {
-            bilibili: 'https://space.bilibili.com/[YOUR_ID]',
-            douyin: 'https://www.douyin.com/user/[YOUR_ID]',
-            weibo: 'https://weibo.com/[YOUR_USERNAME]',
-            github: 'https://github.com/[YOUR_USERNAME]'
+            bilibili: 'https://space.bilibili.com/[???]',
+            douyin: 'https://www.douyin.com/user/[???]',
+            weibo: 'https://weibo.com/[???]',
+            github: 'https://github.com/[???]'
         };
 
         // 显示提示或跳转到链接
@@ -198,7 +198,7 @@ class SocialMediaManager {
         tooltip.innerHTML = `
             <div style="text-align: center;">
                 <strong>${this.getPlatformName(platform)}</strong><br>
-                <small>请修改链接地址为实际账号</small><br>
+                <small>建设中</small><br>
                 <code style="font-size: 0.8em;">${placeholderUrl}</code>
             </div>
         `;
@@ -273,9 +273,12 @@ class SocialMediaManager {
 
 // 添加一些实用的功能
 function copyToClipboard(text) {
+    const lang = localStorage.getItem('language') || 'zh';
+    const message = lang === 'zh' ? '已复制到剪贴板' : 'Copied to clipboard';
+    
     navigator.clipboard.writeText(text).then(() => {
         const tooltip = document.createElement('div');
-        tooltip.textContent = '已复制到剪贴板';
+        tooltip.textContent = message;
         tooltip.style.cssText = `
             position: fixed;
             top: 50%;
@@ -346,7 +349,7 @@ class MobileOptimization {
     }
 }
 
-// 为邮箱地址添加点击复制功能
+// 为邮箱地址和微信号添加点击复制功能
 document.addEventListener('DOMContentLoaded', () => {
     const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
     emailLinks.forEach(link => {
@@ -354,6 +357,16 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const email = link.href.replace('mailto:', '');
             copyToClipboard(email);
+        });
+    });
+    
+    const copyElements = document.querySelectorAll('.copy-text');
+    copyElements.forEach(element => {
+        element.style.cursor = 'pointer';
+        element.title = '点击复制';
+        element.addEventListener('click', () => {
+            const text = element.dataset.text || element.textContent;
+            copyToClipboard(text);
         });
     });
 });

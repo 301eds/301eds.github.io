@@ -293,6 +293,17 @@ body {
     padding: 10px 0;
 }
 
+.contact-item a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.contact-item a:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
 .contact-item i {
     color: var(--secondary-color);
     font-size: 1.5rem;
