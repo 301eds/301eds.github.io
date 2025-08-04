@@ -35,6 +35,8 @@ class LanguageManager {
             const text = el.dataset[lang];
             if (el.tagName === 'INPUT') {
                 el.placeholder = text;
+            } else if (el.tagName === 'TITLE') {
+                document.title = text;
             } else {
                 el.textContent = text;
             }
@@ -194,11 +196,15 @@ class SocialMediaManager {
     }
 
     showSocialHint(platform, placeholderUrl) {
+        const lang = localStorage.getItem('language') || 'zh';
+        const platformName = this.getPlatformName(platform, lang);
+        const statusText = lang === 'zh' ? '建设中' : 'Coming Soon';
+        
         const tooltip = document.createElement('div');
         tooltip.innerHTML = `
             <div style="text-align: center;">
-                <strong>${this.getPlatformName(platform)}</strong><br>
-                <small>建设中</small><br>
+                <strong>${platformName}</strong><br>
+                <small>${statusText}</small><br>
                 <code style="font-size: 0.8em;">${placeholderUrl}</code>
             </div>
         `;
@@ -232,12 +238,16 @@ class SocialMediaManager {
     }
 
     showQRUploadHint() {
+        const lang = localStorage.getItem('language') || 'zh';
+        const titleText = lang === 'zh' ? '建设中' : 'Under Construction';
+        const descText = lang === 'zh' ? '敬请期待' : 'Comming Soon.';
+        
         const tooltip = document.createElement('div');
         tooltip.innerHTML = `
             <div style="text-align: center;">
                 <i class="fas fa-info-circle" style="font-size: 2rem; color: var(--secondary-color); margin-bottom: 10px;"></i><br>
-                <strong data-zh="二维码上传" data-en="QR Code Upload">二维码上传</strong><br>
-                <span data-zh="替换此区域为您的微信公众号二维码" data-en="Replace this area with your WeChat QR code">替换此区域为您的微信公众号二维码</span>
+                <strong>${titleText}</strong><br>
+                <span>${descText}</span>
             </div>
         `;
         tooltip.style.cssText = `
@@ -260,14 +270,14 @@ class SocialMediaManager {
         setTimeout(() => tooltip.remove(), 3000);
     }
 
-    getPlatformName(platform) {
+    getPlatformName(platform, lang = 'zh') {
         const names = {
-            bilibili: '哔哩哔哩',
-            douyin: '抖音',
-            weibo: '微博',
-            github: 'GitHub'
+            bilibili: { zh: '哔哩哔哩', en: 'Bilibili' },
+            douyin: { zh: '抖音', en: 'Douyin' },
+            weibo: { zh: '微博', en: 'Weibo' },
+            github: { zh: 'GitHub', en: 'GitHub' }
         };
-        return names[platform] || platform;
+        return names[platform]?.[lang] || platform;
     }
 }
 
